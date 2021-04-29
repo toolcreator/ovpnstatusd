@@ -1,14 +1,28 @@
 # ovpnstatusd
 
+Downloads *openvpn-status.log* from an [OpenVPN](https://openvpn.net/) server via
+[SSH](https://en.wikipedia.org/wiki/Secure_Shell_Protocol) and provides the number of connected clients using a certain
+common name scrapable by [Prometheus](https://prometheus.io/).
+
 ## Usage
 
 ```shell
 $ ovpnstatusd -help
-Usage of ovpnstatusd:
+Usage of ./ovpnstatusd:
+  -destination string
+        The hostname/IP address and port of the destination, separated by colon.
   -interval int
-        The update interval in milliseconds (default 1000)
+        The update interval in milliseconds (default 60000)
+  -password string
+        The password
   -port int
         The port ovpnstatusd listens on (default 8080)
+  -remote-path string
+        The path to openvpn-status.log at the destination (default "/etc/openvpn/openvpn-status.log")
+  -timeout uint
+        The timeout in seconds (default 5)
+  -user string
+        The usernam
 ```
 
 When running, ovpnstatusd listens to the specified port and provides the metrics at the
@@ -69,8 +83,8 @@ You may also skip step 4 and use `./ovpnstatusd` to run the program instead.
 ## Metrics
 
 All metrics are of type [gauge](https://prometheus.io/docs/concepts/metric_types/#gauge)
-and are labeled with `example_label`.
+and are labeled with `common_name`.
 
 | Name          | Description   |
 | ------------- | ------------- |
-| example_gauge | Example Gauge |
+| ovpnstatusd_client_count | The number of clients connected using the common name |
